@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'package:flutter_world_time/pages/services/world_time.dart';
 
 class Loading extends StatefulWidget {
   const Loading({Key? key}) : super(key: key);
@@ -10,36 +9,33 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  void getData() async {
-    // simulate network request for a username
-    // String username = await Future.delayed(Duration(seconds: 3), () {
-    //   return 'jenal';
-    // });
+  String time = 'loading';
 
-    // String bio = await Future.delayed(Duration(seconds: 2), () {
-    //   return 'vegan, musician & egg collector';
-    // });
-
-    // print('$username - $bio');
-
-    Response response =
-        await get(Uri.parse('https://jsonplaceholder.typicode.com/todos/1'));
-    Map data = jsonDecode(response.body);
-    print(data);
-    print(data['title']);
+  Future<void> setupWorldTime() async {
+    World_Time instance = World_Time(
+        location: 'Indonesia', flag: 'indonesia.png', url: 'Asia/Jakarta');
+    await instance.getTime();
+    setState(() {
+      time = instance.time2;
+    });
   }
 
   @override
   void initState() {
     super.initState();
     // print('initState function ran');
-    getData();
+    setupWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Text('Loading')),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(50.0),
+          child: Text(time),
+        ),
+      ),
     );
   }
 }
