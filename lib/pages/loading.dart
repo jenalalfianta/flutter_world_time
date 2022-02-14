@@ -15,9 +15,12 @@ class _LoadingState extends State<Loading> {
     World_Time instance = World_Time(
         location: 'Indonesia', flag: 'indonesia.png', url: 'Asia/Jakarta');
     await instance.getTime();
-    setState(() {
-      time = instance.time2;
-    });
+      Navigator.pushReplacementNamed(context, '/home', arguments: {
+        'location': instance.location,
+        'flag': instance.flag,
+        'time': instance.time2,
+        
+      });
   }
 
   @override
@@ -33,7 +36,7 @@ class _LoadingState extends State<Loading> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(50.0),
-          child: Text(time),
+          child: Text("loading..."),
         ),
       ),
     );
